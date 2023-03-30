@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "scheduledBatchOrderId": "1ae8398c-8824-491f-bba0-8e4b23514b28",
+    "bankReferenceId": "5acf87b5-0db5-407c-8b73-ca3ad928a0fe",
+    "amount": 100.00,
+    "executionDate": "2022-11-11",
+    "status": "PROCESSED"
+  },
+  {
+    "id": 2,
+    "scheduledBatchOrderId": "1ae8398c-8824-491f-bba0-8e4b23514b28",
+    "bankReferenceId": "5acf87b5-0db5-407c-8b73-ca3jfejsfk",
+    "amount": 100.00,
+    "executionDate": "2022-12-11",
+    "status": "PROCESSED"
+  }
+]

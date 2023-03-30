@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: Scheduled Payment Order Service API Spec
+  description: Specs for Scheduled Payment Order Service API
+  version: 1.1.0
+  x-icon: credit_card
+
+servers:
+  - description: local test
+    url: http://localhost:8080/api/v1
+
+tags:
+  - name: Retail
+  - name: Business
+
+paths:
+
+  /service-api/v1/scheduled-batch-orders/batchPayments:
+    description: Manage Batch Payment orders
+    post:
+      summary: Creates a Batch order record
+      description: Creates a Batch order record
+      operationId: postScheduledBatchOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: 'scheduled-batch-common.yaml#/components/schemas/PostScheduledBatchOrderRequest'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'scheduled-batch-common.yaml#/components/schemas/PostScheduledBatchOrderResponse'
+          description: Successful post scheduled Batch order history API response
+        "400":
+          $ref: 'lib/common-types.yaml#/components/responses/400BadRequest'
+        "500":
+          $ref: 'lib/common-types.yaml#/components/responses/500InternalServerError'
+      tags:
+        - scheduledBatchOrder
+    get:
+      summary: Retrieves a list of batch order records for next execution date
+      description: Retrieves a list of batch order records next execution date
+      operationId: getScheduledBatchOrders
+      parameters:
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/nextExecutionDateParam'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/fromPaginationParam'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/sizePaginationParam'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'scheduled-batch-common.yaml#/components/schemas/GetScheduledBatchOrderResponse'
+          description: Successful get scheduled payment order  API response
+        "400":
+          $ref: 'lib/common-types.yaml#/components/responses/400BadRequest'
+        "500":
+          $ref: 'lib/common-types.yaml#/components/responses/500InternalServerError'
+      tags:
+        - scheduledBatchOrder
+    put:
+      summary: Update Scheduled Batch Order
+      description: Update Scheduled Batch Order
+      operationId: putScheduledBatchOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: 'scheduled-batch-common.yaml#/components/schemas/PutScheduledBatchOrderRequest'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'scheduled-batch-common.yaml#/components/schemas/PutScheduledBatchOrderResponse'
+          description: Successful post scheduled payment order API response
+        "400":
+          $ref: 'lib/common-types.yaml#/components/responses/400BadRequest'
+        "500":
+          $ref: 'lib/common-types.yaml#/components/responses/500InternalServerError'
+      tags:
+        - scheduledBatchOrder
+  /service-api/v1/scheduled-batch-orders/history:
+    description: Manage transactional records for executed batch payment orders containing the result of the execution
+    post:
+      summary: Creates a transactional record for an Batch order
+      description: Creates a transactional record for Batch order
+      operationId: postScheduledBatchOrderHistory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: 'scheduled-batch-common.yaml#/components/schemas/PostScheduledBatchOrderHistoryRequest'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'scheduled-batch-common.yaml#/components/schemas/PostScheduledBatchOrderHistoryResponse'
+          description: Successful post scheduled payment order History API response
+        "400":
+          $ref: 'lib/common-types.yaml#/components/responses/400BadRequest'
+        "500":
+          $ref: 'lib/common-types.yaml#/components/responses/500InternalServerError'
+      tags:
+        - scheduledBatchOrderHistoryService
+    get:
+      summary: Retrieves a list of batch order history records for an executed scheduled Batch payment order
+      description: Retrieves a list of batch order history records for an executed scheduled Batch payment order
+      operationId: GetScheduledBatchOrderHistory
+      parameters:
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/fromExecutionDate'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/toExecutionDate'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/status'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/accountNumber'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/createdBy'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/batchOrderId'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/fromPaginationParam'
+        - $ref: 'scheduled-batch-common.yaml#/components/parameters/sizePaginationParam'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'scheduled-batch-common.yaml#/components/schemas/GetScheduledBatchOrderHistoryResponse'
+          description: Successful get scheduled payment order transactions API response
+        "400":
+          $ref: 'lib/common-types.yaml#/components/responses/400BadRequest'
+        "500":
+          $ref: 'lib/common-types.yaml#/components/responses/500InternalServerError'
+      tags:
+        - scheduledBatchOrderHistoryService

@@ -1,0 +1,319 @@
+openapi: 3.0.3
+
+info:
+  title: OpenAPI Scheduled Payment Orders Common
+  description: Common items to use in schemas.
+  version: 3.0.3
+
+paths: { }
+
+components:
+  schemas:
+    ValidateExecutionDateResponse:
+      type: object
+      properties:
+        originalExecutionDate:
+          type: string
+          format: date
+        nextAvailableExecutionDateBefore:
+          type: string
+          format: date
+        nextAvailableExecutionDateAfter:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [ OK, RESTRICTED_DATE_DETECTED ]
+      example:
+        $ref: 'examples/example-validate-execution-date-response.json'
+
+    PostScheduledBatchOrderRequest:
+      type: object
+      properties:
+        batchOrderId:
+          type: string
+        reqExecutionDate:
+          type: string
+          format: date
+        nextExecutionDate:
+          type: string
+          format: date
+        pmtType:
+          type: string
+        status:
+          type: string
+        pmtMode:
+          type: string
+        accountNumber:
+          type: string
+        createdBy:
+          type: string
+        filename:
+          type: string
+        frequency:
+          type: string
+        startDate:
+          type: date
+        endDate:
+          type: date
+        repetition:
+          type: int
+        whenExecute:
+          type: int
+        endType:
+          type: string
+        additions:
+          $ref: '#/components/schemas/Additions'
+      required:
+        - batchOrderId
+        - reqExecutionDate
+        - status
+        - pmtType
+        - accountNumber
+      example:
+        $ref: 'examples/example-post-scheduled-batch-order-request.json'
+
+    GetScheduledBatchOrderResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ScheduledBatchOrderItem'
+    PutScheduledBatchOrderRequest:
+      type: object
+      properties:
+        batchOrderId:
+          type: string
+        nextExecutionDate:
+          type: string
+          format: date
+        pmtType:
+          type: string
+        status:
+          type: string
+        pmtMode:
+          type: string
+        accountNumber:
+          type: string
+        createdBy:
+          type: string
+        fileName:
+          type: string
+        reasonText:
+          type: string
+        errorDescription:
+          type: string
+
+        additions:
+          $ref: '#/components/schemas/Additions'
+      required:
+        - batchOrderId
+        - status
+      example:
+        $ref: 'examples/example-put-scheduled-batch-order-request.json'
+    ScheduledBatchOrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        batchOrderId:
+          type: string
+        reqExecutionDate:
+          type: string
+          format: date
+        nextExecutionDate:
+          type: string
+          format: date
+        pmtType:
+          type: string
+        status:
+          type: string
+        pmtMode:
+          type: string
+        accountNumber:
+          type: string
+        createdBy:
+          type: string
+        filename:
+          type: string
+        frequency:
+          type: string
+        startDate:
+          type: date
+        endDate:
+          type: date
+        repetition:
+          type: int
+        whenExecute:
+          type: int
+        endType:
+          type: string
+        additions:
+          $ref: '#/components/schemas/Additions'
+      example:
+        $ref: 'examples/example-post-scheduled-batch-order-response.json'
+
+    PostScheduledBatchOrderResponse:
+      type: object
+      properties:
+        batchOrderItem:
+          $ref: '#/components/schemas/ScheduledBatchOrderItem'
+      example:
+        $ref: 'examples/example-post-scheduled-batch-order-response.json'
+    PutScheduledBatchOrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      example:
+        $ref: 'examples/example-put-scheduled-batch-order-response.json'
+    Additions:
+      type: object
+      additionalProperties:
+        type: string
+      description: Additional properties
+
+    PostScheduledBatchOrderHistoryRequest:
+      type: object
+      properties:
+        batchOrderId:
+          type: string
+        executionDateTime:
+          type: string
+          format: date-time
+        status:
+          type: string
+        fileName:
+          type: string
+        reasonText:
+          type: string
+        errorDescription:
+          type: string
+        additions:
+          $ref: '#/components/schemas/Additions'
+      required:
+        - batchOrderId
+        - executionDate
+        - status
+      example:
+        $ref: 'examples/example-post-scheduled-batch-history-request.json'
+    PostScheduledBatchOrderHistoryResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      example:
+        $ref: 'examples/example-post-scheduled-batch-history-response.json'
+    GetScheduledBatchOrderHistoryResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ScheduledBatchHistoryItem'
+
+    ScheduledBatchHistoryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        batchOrderId:
+          type: string
+        executionDateTime:
+          type: string
+          format: date-time
+        pmtType:
+          type: string
+        status:
+          type: string
+        accountNumber:
+          type: string
+        createdBy:
+          type: string
+        fileName:
+          type: string
+        reasonText:
+          type: string
+        errorDescription:
+          type: string
+        batchOrder:
+            $ref: '#/components/schemas/ScheduledBatchOrderItem'
+        additions:
+          $ref: '#/components/schemas/Additions'
+      example:
+        $ref: 'examples/example-get-scheduled-batch-history-response.json'
+
+  parameters:
+    reqExecutionDateParam:
+      name: reqExecutionDate
+      description: The execution date of the scheduled payment order
+      in: path
+      required: true
+      schema:
+        type: string
+        format: date
+
+    nextExecutionDateParam:
+      name: nextExecutionDateParam
+      description: next execution Date of Batch Order
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+    fromExecutionDate:
+      name: fromExecutionDate
+      description: from execution Date of Batch Order
+      in: query
+      schema:
+        type: string
+        format: date
+    toExecutionDate:
+      name: toExecutionDate
+      description: execution Date of Batch Order
+      in: query
+      schema:
+        type: string
+        format: date
+    status:
+      name: status
+      description: status of Batch Order
+      in: query
+      schema:
+        type: string
+    accountNumber:
+      name: accountNumber
+      description: accountNumber of Batch Order
+      in: query
+      schema:
+        type: string
+    createdBy:
+      name: createdBy
+      description: user created the of Batch Order
+      in: query
+      schema:
+        type: string
+    batchOrderId:
+      name: batchOrderId
+      description: Id of Batch Order
+      in: query
+      schema:
+        type: string
+    fromPaginationParam:
+      name: from
+      description: Page Number. Skip over pages of elements by specifying a start value for the query.
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+    sizePaginationParam:
+      name: size
+      description: Limit the number of elements in the response.
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+
+
+
+
+
